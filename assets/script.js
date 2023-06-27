@@ -1,54 +1,36 @@
-// Index du slide actuel
+// Définition de l'index du slide et de la liste des slides
 let slideIndex = 0;
+const slides = ['./assets/images/slideshow/slide1.jpg','./assets/images/slideshow/slide2.jpg','./assets/images/slideshow/slide3.jpg','./assets/images/slideshow/slide4.png'];
 
-// Chemin des slides
-const slides = [
-  './assets/images/slideshow/slide1.jpg',
-  './assets/images/slideshow/slide2.jpg',
-  './assets/images/slideshow/slide3.jpg',
-  './assets/images/slideshow/slide4.png'
-];
+// Appel de la fonction showSlide au chargement de la page
+window.onload = () => showSlide(slideIndex);
 
-// Afficher le premier slide à l'ouverture de la page
-window.onload = function() {
-  showSlide(slideIndex);
-};
-
-// Afficher le slide correspondant à l'index
+// Fonction pour afficher le slide à l'index n
 function showSlide(n) {
-  const img = document.querySelector('#banner .banner-img');
-  img.src = slides[n];
-  updateDots(n);
+  // Changer l'image du slide
+  document.querySelector('#banner .banner-img').src = slides[n];
+  
+  // Changer le point sélectionné sous le slide
+  [...document.querySelectorAll('.dot')].map((dot, i) => dot.classList.toggle('dot_selected', i === n));
 }
 
-// Mettre à jour les "dots" en fonction du slide actuel
-function updateDots(n) {
-  const dots = document.querySelectorAll('.dot');
-  dots.forEach((dot, index) => {
-    dot.classList.remove('dot_selected');
-    if (index === n) {
-      dot.classList.add('dot_selected');
-    }
-  });
-}
-
-// Changer de slide
+// Fonction pour changer le slide de n positions
 function changeSlide(n) {
-  slideIndex += n;
-  if (slideIndex > slides.length - 1) {
-    slideIndex = 0;
-  } else if (slideIndex < 0) {
-    slideIndex = slides.length - 1;
-  }
+  // Modifie l'index du slide et s'assure qu'il reste dans les limites de la liste des slides
+  slideIndex = (slideIndex + n + slides.length) % slides.length;
+  
+  // Affiche le slide à l'index actuel
   showSlide(slideIndex);
 }
 
-// Listener pour le bouton précédent
-document.querySelector('#banner .arrow_left').addEventListener('click', function() {
-  changeSlide(-1);
-});
-
-// Listener pour le bouton suivant
-document.querySelector('#banner .arrow_right').addEventListener('click', function() {
-  changeSlide(1);
+// Ajout des gestionnaires d'événements pour les flèches
+['.arrow_left', '.arrow_right'].forEach((selector, i) => {
+  // Sélection de la flèche
+  const arrow = document.querySelector(`#banner ${selector}`);
+  
+  // Change le curseur quand on passe la souris sur la flèche
+  arrow.style.cursor = 'pointer';
+  
+  // Ajout de l'événement de clic sur la flèche
+  arrow.addEventListener('click', () => changeSlide(i === 0 ? -1 : 1)); // si i == 0, alors on est sur la flèche gauche donc n == -1, sinon n == 1
 });
