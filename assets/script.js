@@ -1,6 +1,9 @@
 // Définition de l'index du slide et de la liste des slides
 let slideIndex = 0;
-const slides = ['./assets/images/slideshow/slide1.jpg','./assets/images/slideshow/slide2.jpg','./assets/images/slideshow/slide3.jpg','./assets/images/slideshow/slide4.png'];
+const slides = ['./assets/images/slideshow/slide1.jpg',
+'./assets/images/slideshow/slide2.jpg',
+'./assets/images/slideshow/slide3.jpg',
+'./assets/images/slideshow/slide4.png'];
 
 // Appel de la fonction showSlide au chargement de la page
 window.onload = () => showSlide(slideIndex);
